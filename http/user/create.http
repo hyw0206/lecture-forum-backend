@@ -1,0 +1,15 @@
+#   환경변수 세팅
+@baseUrl = http://localhost:8000
+
+//  유저 생성 테스트
+POST {{baseUrl}}/user/create
+Content-Type: application/json
+
+{
+  "username": "abc",
+  "password": "abc123",
+  "name": "젯젯",
+  "nickname": "브브레인",
+  "email": "123@abc.com",
+  "gender": "MALE"
+}

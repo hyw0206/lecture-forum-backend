@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UserCreateInput } from "../generated/prisma/models/User.ts";
 import userService from "../services/userService.ts";
 
-const createUser = (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response) => {
   try {
     const { username, password, name, nickname, email, phoneNumber, birthdate, gender, role } =
       req.body;
@@ -20,7 +20,7 @@ const createUser = (req: Request, res: Response) => {
       role,
     };
 
-    const newUser = userService.createUser(userData);
+    const newUser = await userService.createUser(userData);
     // response의 status code 처리
     // 201 Created
     res.status(201).json(newUser);
