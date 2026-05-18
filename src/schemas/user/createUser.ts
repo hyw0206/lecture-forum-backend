@@ -9,7 +9,7 @@ export const createUserSchema = z.object({
     nickname: z.string().min(2).max(10),
     email: z.email(),
     phoneNumber: z.string().optional(),
-    birthdate: z.iso.datetime().optional(),
+    birthdate: z.iso.date().optional(),
     gender: z.enum(GenderType),
 });
 

@@ -45,22 +45,22 @@ const createUser = async (req: Request, res: Response) => {
         if (error instanceof Error) {
             switch (error.message) {
                 case "ALREADY_EXISTS_USERNAME":
-                    res.status(409).json({ error: "이미 사용 중인 아이디입니다. " });
+                    res.status(409).json({ message: "이미 사용 중인 아이디입니다." });
                     return;
                 case "ALREADY_EXISTS_EMAIL":
-                    res.status(409).json({ error: "이미 가입된 이메일입니다. " });
+                    res.status(409).json({ message: "이미 가입된 이메일입니다." });
                     return;
                 case "ALREADY_EXISTS_NICKNAME":
-                    res.status(409).json({ error: "이미 사용 중인 닉네임입니다. " });
+                    res.status(409).json({ message: "이미 사용 중인 닉네임입니다." });
                     return;
                 default:
                     console.log(error);
-                    res.status(500).json({ message: "유저 생성 중 오류가 발생했습니다." });
+                    return res.status(500).json({ message: "유저 생성 중 오류가 발생했습니다." });
             }
         }
 
         console.log(error);
-        res.status(500).json({ message: "유저 생성 중 오류가 발생했습니다." });
+        return res.status(500).json({ message: "유저 생성 중 오류가 발생했습니다." });
     }
 };
 
@@ -73,12 +73,21 @@ const login = async (req: Request, res: Response) => {
         const loginData: LoginInputType = req.body;
 
         const result = await userService.login(loginData);
-
         res.status(200).json({
             message: "로그인에 성공했습니다.",
             data: result,
         });
-    } catch (error) {}
+    } catch (error) {
+        // login은 이미 에러를 throw new Error라는 JS 표준 객체로 만들었기에 ㄱㅊ음 -> 처리 로직만 ㄱㄱ
+        if (error instanceof Error) {
+            if (error.message === "INVALID_CREDENTIALS") {
+                res.status(401).json({ message: "아이디 또는 비밀번호가 일치하지 않습니다." });
+                return;
+            }
+        }
+        console.log(error);
+        res.status(500).json({ message: "로그인 처리 중 서버 에러 발생" });
+    }
 };
 
 export default {
