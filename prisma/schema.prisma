@@ -54,10 +54,10 @@ model User {
 }
 
 model Category {
-  id  Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name String
-  status CategoryStatus @default(ACTIVE)
+  id          Int             @id @default(autoincrement())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  name        String          @unique
+  status      CategoryStatus  @default(ACTIVE)
 }
 
