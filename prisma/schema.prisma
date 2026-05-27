@@ -11,6 +11,7 @@ generator client {
 // prisma를 통해 사용할 DB source 종류를 기록
 datasource db {
   provider = "mysql"
+  relationMode = "prisma"
 }
 
 // 이 아랫부분에는 내가 실제 데이터베이스에 사용할 모델링을 기재 -> prisma의 문법을 통해
@@ -51,6 +52,8 @@ model User {
   birthdate   DateTime?
   gender      GenderType
   role        RoleType   @default(USER) // 삽입할 때 기본값으로 USER 기록
+
+  posts       Post[]
 }
 
 model Category {
@@ -59,4 +62,23 @@ model Category {
   updatedAt DateTime       @updatedAt
   name      String         @unique
   status    CategoryStatus @default(ACTIVE)
+  posts     Post[]
+}
+
+model Post {
+  id        Int            @id @default(autoincrement())
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  deletedAt DateTime?
+  title     String
+  content   String         @db.Text
+  views     Int            @default(0)
+
+  userId    Int
+  user      User           @relation(fields: [userId], references: [id])
+  categoryId Int
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@index([userId])
+  @@index([categoryId])
 }
