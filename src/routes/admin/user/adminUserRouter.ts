@@ -5,7 +5,7 @@ import { adminCreateUserSchema } from "../../../schemas/admin/user/createUser.ts
 import { adminUpdateUserSchema } from "../../../schemas/admin/user/updateUser.ts";
 
 const router = Router();
-
+// !!
 router.get("/list", adminUserController.getUserList);
 router.post("/create", validate(adminCreateUserSchema), adminUserController.createUser);
 router.patch("/:id", validate(adminUpdateUserSchema), adminUserController.updateUser);
